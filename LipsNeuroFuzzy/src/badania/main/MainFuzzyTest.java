@@ -41,10 +41,17 @@ public class MainFuzzyTest {
 //				15, 15, // size - start, stop
 //				100 ); // runs in one set
 
-		//for (double a = 10; a < 40.0; a += 2.0)
-			test.doTestLeaveOneOut(3, 20, 600);
+//		for (double a = 2.0; a < 5.0; a += 0.5)
+			test.doTestLeaveOneOut(2, 20, 600);
 		//3	20	354	246	59	41	0	0	3701.422
-		//	The best: 59%, A: 3, B: 20
+		//The best: 59%, A: 3, B: 20 - without quality
+			
+		//2	20	381	219	63.5	36.5	0	0	3841.205
+		//The best: 63.5%, A: 2, B: 20 - quality
+			
+		//2	20	376	224	62.667	37.333	0	0	3998.923
+		//The best: 62.667%, A: 2, B: 20 - quality and probab sum
+
 	}
 
 }

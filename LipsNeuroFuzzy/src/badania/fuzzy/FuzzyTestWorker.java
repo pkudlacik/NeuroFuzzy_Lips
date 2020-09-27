@@ -3,6 +3,7 @@ package badania.fuzzy;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 import badania.TestResult;
 import fuzzlib.DefuzMethod;
 import fuzzlib.FuzzySet;
+import fuzzlib.avers.Average;
 import fuzzlib.norms.SNorm;
 import fuzzlib.norms.TNorm;
 import fuzzlib.reasoning.ReasoningSystem;
@@ -34,6 +36,7 @@ public class FuzzyTestWorker extends Thread {
 
 	DataPackage learnPkg;
 	DataPackage testPkg;
+	DataPackage qualityPkg;
 
 	private ReasoningSystem rs;
 
@@ -95,12 +98,20 @@ public class FuzzyTestWorker extends Thread {
 		learnPkg = new DataPackage();
 		DataPackage bottom = new DataPackage();
 		
-		bottom.loadTextFile("data/SEG10_BOTTOM.txt");
 		learnPkg.loadTextFile("data/SEG10_UP.txt");
+		bottom.loadTextFile("data/SEG10_BOTTOM.txt");
 		DataPackage rest = learnPkg.splitByColumn(learnPkg.getMaxRowSize()-2);
 		learnPkg.merge(bottom);
 
 		testPkg = learnPkg.removeVector(sizePackage);
+		
+		qualityPkg = new DataPackage();
+		bottom = new DataPackage();
+
+		qualityPkg.loadTextFile("data/SEG10_UP_QUALITY.txt");
+		bottom.loadTextFile("data/SEG10_BOTTOM_QUALITY.txt");
+		rest = qualityPkg.splitByColumn(qualityPkg.getMaxRowSize()-2);
+		qualityPkg.merge(bottom);
 		
 		if (verbose) {
 			System.out.println(learnPkg);
@@ -126,7 +137,7 @@ public class FuzzyTestWorker extends Thread {
 		config.setAndOperationType(TNorm.TN_PRODUCT);
 		config.setOrOperationType(SNorm.SN_PROBABSUM);
 		config.setImplicationType(TNorm.TN_PRODUCT);
-		config.setConclusionAgregationType(SNorm.SN_PROBABSUM);
+		config.setConclusionAgregationType(Average.SUM);
 		config.setTruthCompositionType(TNorm.TN_PRODUCT);
 		config.setAutoDefuzzyfication(false);
 		config.setDefuzzyfication(DefuzMethod.DF_COG);
@@ -175,9 +186,12 @@ public class FuzzyTestWorker extends Thread {
 		}
 
 		try {
+			Iterator<DataVector> quality_it = qualityPkg.getList().iterator();
 			for (DataVector vector : learnPkg.getList()) {
 
-				// nazwa klasy to ostatnia pozycja
+				DataVector q_vector = quality_it.next();
+				
+				// numer klasy to ostatnia pozycja
 				int klasa = (int) vector.get(vector.size()-1);
 
 				// dla pozosta³ych pozycji wiersza
@@ -189,11 +203,16 @@ public class FuzzyTestWorker extends Thread {
 					// zbuduj nazwê zbioru przes³anki
 					String nazwa = "fs_a" + (i+1) + "_" + "x" + (x+1);
 					FuzzySet temp = new FuzzySet(nazwa, "");
-
+					
+					//pobierz jakoœæ
+					double quality = q_vector.get(i);
+					if (quality < 0.001) quality = 0.001;
+							
 					// zdefiniuj funkcjê przynaleznoœci
 
 					//temp.newTriangle(Axi, Zx / a);
-					temp.newGaussian(Axi, Zx / a);
+					//temp.newGaussian(Axi, (Zx / a) / quality);
+					temp.newGaussian(Axi, (Zx / a) / quality);
 					//temp.newTrapezium(Axi, (Zx/a), (Zx/a) / 10.0 );
 
 					// dodaj zbiór jako przes³ankê
@@ -318,7 +337,6 @@ public class FuzzyTestWorker extends Thread {
 				} else {
 					failed++;
 				}
-
 				 
 //				 System.out.println("object: " + object);
 //				 System.out.println("classified to: " + class_obtained);
