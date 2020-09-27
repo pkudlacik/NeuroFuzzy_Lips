@@ -12,6 +12,7 @@ public class MainFuzzyTest {
 		test.setShowOnlyBestResults(false);
 //		test.setBestLevel(90.0);
 		test.setBestRange(2.0);
+		test.setThreads(8);
 		
 		// Clusteryzowane: 25 - 93.5%(A:1.5), 20 - 93%(A:1.1), 15 - 92% (A:1.0), 10 - 91% (A:0.7), 5 - 
 

@@ -138,8 +138,7 @@ public class FuzzyTest {
 					int runs = tests;
 
 					if (!simpleResults) {
-						System.out.print("*** Processing ");
-						System.out.println();
+						System.out.println("*** Processing ");
 					}
 					// run defined threads (tests)
 					for (int i = 0; i < runs; i++) {
@@ -229,8 +228,7 @@ public class FuzzyTest {
 		clearStats();
 
 		if (!simpleResults) {
-			System.out.print("*** Processing ");
-			System.out.println();
+			System.out.println("*** Processing ");
 		}
 		int counter = 0;
 

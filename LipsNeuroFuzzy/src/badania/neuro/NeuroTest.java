@@ -144,7 +144,6 @@ public class NeuroTest {
 
 					if (!simpleResults) {
 						System.out.println("*** Processing ");
-						System.out.println();
 					}
 					// run defined threads (tests)
 					for (int k = 0; k < runs; k++) {
@@ -237,7 +236,6 @@ public class NeuroTest {
 		int counter = 0;
 		if (!simpleResults) {
 			System.out.println("*** Processing ");
-			System.out.println();
 		}
 
 		// for all positions
