@@ -20,7 +20,7 @@ public class MainNeuroTest {
 //					100 ); // runs in one set
 		
 		//for (int i=0; i<5; i++)
-			test.doTestLeaveOneOut(2000, 0.9, 12);
+			test.doTestLeaveOneOut(100, 0.9, 1);
 		
 	}
 

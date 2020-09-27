@@ -164,7 +164,7 @@ public class NeuroTestWorker extends Thread {
 		alg_m.setMomentum(0.0);
 
 		try {
-			alg_m.learnEx(learnInput, learnOutput);
+			alg_m.learnForMaxError(learnInput, learnOutput);
 		} catch (NeuroException e) {
 			e.printStackTrace();
 		}
@@ -232,15 +232,17 @@ public class NeuroTestWorker extends Thread {
 					failed++;
 				}
 
-//				DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
-//				otherSymbols.setDecimalSeparator('.');
-//				DecimalFormat df = new DecimalFormat("0.000", otherSymbols);
-//
-//				System.out.println("object [c" + class_real + "]: " + input);
-//				System.out.print("[c1]: " + df.format(output.get(0)));
-//				System.out.print("\t[c2]: " + df.format(output.get(1)));
-//				System.out.println("\t[c3]: " + df.format(output.get(2)));
-//				System.out.println("----------------------------------------------------");
+				DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+				otherSymbols.setDecimalSeparator('.');
+				DecimalFormat df = new DecimalFormat("0.000", otherSymbols);
+
+				System.out.println();
+				System.out.print("o"+class_obtained+"\t r" + class_real + "\t");
+				for (int c=0; c<100; c++) {
+					System.out.print(df.format(output.get(c))+"\t");					
+				}
+				System.out.println();
+				System.out.println("----------------------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
