@@ -8,7 +8,7 @@ public class MainNeuroTest {
 		
 		NeuroTest test = new NeuroTest();
 
-		test.setSimpleResults(false);
+		test.setSimpleResults(true);
 		test.setShowOnlyBestResults(false);
 		//test.setBestLevel(80.0);
 		test.setBestRange(5.0);
@@ -20,7 +20,7 @@ public class MainNeuroTest {
 //					100 ); // runs in one set
 		
 		//for (int i=0; i<5; i++)
-			test.doTestLeaveOneOut(100, 0.9, 1);
+			test.doTestLeaveOneOut(2000, 0.5, 8);
 		
 	}
 

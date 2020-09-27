@@ -148,7 +148,7 @@ public class FuzzyTest {
 						// FuzzyTestClusteredWorker test = new FuzzyTestClusteredWorker(a, b, size,
 						// false, this);
 						test.start();
-						if (i % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
+						if ((i+1) % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
 							while (reported < i + 1) {
 								try {
 									if (!simpleResults) {
@@ -242,7 +242,7 @@ public class FuzzyTest {
 			// this);
 			test.start();
 			
-			if (i % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
+			if ((i+1) % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
 				while (reported < i + 1) {
 					try {
 						if (!simpleResults) {

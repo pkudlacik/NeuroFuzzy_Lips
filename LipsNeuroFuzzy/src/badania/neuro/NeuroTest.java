@@ -149,7 +149,7 @@ public class NeuroTest {
 					for (int k = 0; k < runs; k++) {
 						NeuroTestWorker test = new NeuroTestWorker(i, e, size, false, this);
 						test.start();
-						if (i % threads == 0) { // wait every defined number of threads until they are done to continue
+						if ((k+1) % threads == 0) { // wait every defined number of threads until they are done to continue
 												// creating new ones
 							while (reported < k + 1) {
 								try {
@@ -243,7 +243,7 @@ public class NeuroTest {
 		for (int i = 0; i < set_size; i++) {
 			NeuroTestWorker test = new NeuroTestWorker(max_iter, max_error, i, false, this);
 			test.start();
-			if (i % threads == 0) { // wait every defined number of threads until they are done to continue
+			if ((i+1) % threads == 0) { // wait every defined number of threads until they are done to continue
 								// creating new ones
 				while (reported < i + 1) {
 					try {
