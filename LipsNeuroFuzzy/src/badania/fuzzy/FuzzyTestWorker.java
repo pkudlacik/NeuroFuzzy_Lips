@@ -37,6 +37,7 @@ public class FuzzyTestWorker extends Thread {
 	DataPackage learnPkg;
 	DataPackage testPkg;
 	DataPackage qualityPkg;
+	DataPackage qualityTestPkg;
 
 	private ReasoningSystem rs;
 
@@ -112,6 +113,10 @@ public class FuzzyTestWorker extends Thread {
 		bottom.loadTextFile("data/SEG10_BOTTOM_QUALITY.txt");
 		rest = qualityPkg.splitByColumn(qualityPkg.getMaxRowSize()-2);
 		qualityPkg.merge(bottom);
+
+		qualityTestPkg = qualityPkg.removeVector(sizePackage);
+		
+		
 		
 		if (verbose) {
 			System.out.println(learnPkg);
@@ -164,15 +169,13 @@ public class FuzzyTestWorker extends Thread {
 		
 		for(int i=0; i<140; i++) {
 			rs.describeInputVar(i, "wej"+(i+1), "");
-//			rs.getInputVar(i).id = "wej"+(i+1);
 //			rs.getInputVar(i).fuzz = new FuzzySet().newTriangle(0, 1/b);
 //			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, 1/b);
 //			rs.getInputVar(i).fuzz = new FuzzySet().newTriangle(0, learnPkg.getColumnRange(i)/b);
-			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, learnPkg.getColumnRange(i) / b);
+//			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, learnPkg.getColumnRange(i) / b);
 		}
 		for(int i=0; i<100; i++) {
 			rs.describeOutputVar(i, "wyj"+(i+1), "");
-//			rs.getOutputVar(i).id = "wyj"+(i+1);
 		}
 	}
 
@@ -310,13 +313,19 @@ public class FuzzyTestWorker extends Thread {
 		//testPkg = learnPkg;
 
 		try {
+			Iterator<DataVector> quality_it = qualityTestPkg.getList().iterator();
 			for (DataVector object : testPkg.getList()) {
+
+				DataVector q_vector = quality_it.next();
 
 				int class_obtained = 0;
 
 				int class_real = (int) object.get(object.size()-1);
 
 				for (int z = 0; z < 140; z++) {
+//					double quality = q_vector.get(z);					
+//					if (quality < 0.001) quality = 0.001;
+//					rs.getInputVar(z).fuzz = new FuzzySet().newGaussian(0, (learnPkg.getColumnRange(z) / b) / quality);
 					rs.setInput(z, object.get(z));
 				}
 				rs.Process();
