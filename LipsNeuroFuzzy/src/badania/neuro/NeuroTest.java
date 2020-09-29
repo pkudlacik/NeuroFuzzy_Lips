@@ -1,5 +1,8 @@
 package badania.neuro;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.LinkedList;
@@ -149,8 +152,9 @@ public class NeuroTest {
 					for (int k = 0; k < runs; k++) {
 						NeuroTestWorker test = new NeuroTestWorker(i, e, size, false, this);
 						test.start();
-						if ((k+1) % threads == 0) { // wait every defined number of threads until they are done to continue
-												// creating new ones
+						if ((k + 1) % threads == 0) { // wait every defined number of threads until they are done to
+														// continue
+							// creating new ones
 							while (reported < k + 1) {
 								try {
 									if (!simpleResults) {
@@ -243,8 +247,8 @@ public class NeuroTest {
 		for (int i = 0; i < set_size; i++) {
 			NeuroTestWorker test = new NeuroTestWorker(max_iter, max_error, i, false, this);
 			test.start();
-			if ((i+1) % threads == 0) { // wait every defined number of threads until they are done to continue
-								// creating new ones
+			if ((i + 1) % threads == 0) { // wait every defined number of threads until they are done to continue
+				// creating new ones
 				while (reported < i + 1) {
 					try {
 						if (!simpleResults) {
@@ -303,10 +307,18 @@ public class NeuroTest {
 				System.out.println("Average time (sec.): " + avgTime / 1000);
 				System.out.println("*******************************************************");
 			} else {
-				System.out.println(max_iter + "\t" + df.format(max_error) + "\t" + set_size + "\t" + df.format(iter)
-						+ "\t" + df.format(error) + "\t" + success + "\t" + fail + "\t" + df.format(procSucc) + "\t"
+				String line = max_iter + "\t" + df.format(max_error) + "\t" + set_size + "\t" + df.format(iter) + "\t"
+						+ df.format(error) + "\t" + success + "\t" + fail + "\t" + df.format(procSucc) + "\t"
 						+ df.format(procFail) + "\t" + df.format(avgSuccess) + "\t" + df.format(avgFail) + "\t"
-						+ df.format(avgTime));
+						+ df.format(avgTime);
+				System.out.println(line);
+				try {
+					PrintWriter out = new PrintWriter(new FileWriter("last_result.txt"));
+					out.println(line);
+					out.close();
+				} catch (IOException e1) {
+					System.out.println("Write error :(");
+				}
 			}
 		}
 

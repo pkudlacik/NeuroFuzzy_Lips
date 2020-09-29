@@ -237,12 +237,12 @@ public class NeuroTestWorker extends Thread {
 				DecimalFormat df = new DecimalFormat("0.000", otherSymbols);
 
 				System.out.println();
-				System.out.print("o"+class_obtained+"\t r" + class_real + "\t");
+				String line = "idx"+outIdx+"\t o"+class_obtained+"\t r" + class_real + "\t";
 				for (int c=0; c<100; c++) {
-					System.out.print(df.format(output.get(c))+"\t");					
+					line += df.format(output.get(c))+"\t";					
 				}
-				System.out.println();
-				System.out.println("----------------------------------------------------");
+				System.out.println(line);
+				//System.out.println("----------------------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

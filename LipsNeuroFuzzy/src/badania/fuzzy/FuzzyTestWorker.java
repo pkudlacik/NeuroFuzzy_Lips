@@ -25,6 +25,9 @@ public class FuzzyTestWorker extends Thread {
 	private double b = 2;
 	private int sizePackage = 5;
 	private boolean verbose = false;
+	
+	//number of segments
+	private int segments = 20; 
 
 	private int success = 0;
 	private int failed = 0;
@@ -99,24 +102,24 @@ public class FuzzyTestWorker extends Thread {
 		learnPkg = new DataPackage();
 		DataPackage bottom = new DataPackage();
 		
-		learnPkg.loadTextFile("data/SEG10_UP.txt");
-		bottom.loadTextFile("data/SEG10_BOTTOM.txt");
+		learnPkg.loadTextFile("data/SEG"+segments+"_UP.txt");
+		bottom.loadTextFile("data/SEG"+segments+"_BOTTOM.txt");
 		DataPackage rest = learnPkg.splitByColumn(learnPkg.getMaxRowSize()-2);
 		learnPkg.merge(bottom);
 
 		testPkg = learnPkg.removeVector(sizePackage);
+		//learnPkg.add(testPkg); //for 100% verification only
 		
 		qualityPkg = new DataPackage();
 		bottom = new DataPackage();
 
-		qualityPkg.loadTextFile("data/SEG10_UP_QUALITY.txt");
-		bottom.loadTextFile("data/SEG10_BOTTOM_QUALITY.txt");
+		qualityPkg.loadTextFile("data/SEG"+segments+"_UP_QUALITY.txt");
+		bottom.loadTextFile("data/SEG"+segments+"_BOTTOM_QUALITY.txt");
 		rest = qualityPkg.splitByColumn(qualityPkg.getMaxRowSize()-2);
 		qualityPkg.merge(bottom);
 
 		qualityTestPkg = qualityPkg.removeVector(sizePackage);
-		
-		
+		//qualityPkg.add(qualityTestPkg); //for 100% verification only
 		
 		if (verbose) {
 			System.out.println(learnPkg);
@@ -130,19 +133,20 @@ public class FuzzyTestWorker extends Thread {
 		
 		SystemConfig config = new SystemConfig();
 
-		config.setInputWidth(140); // number of inputs
+		config.setInputWidth(14*segments); // number of inputs
 		config.setOutputWidth(100);// number of outputs
 
 		// number of premises (it is dynamically extended if needed so it can be not
 		// set)
-		config.setNumberOfPremiseSets(100000);
+		config.setNumberOfPremiseSets(10000*segments);
 		config.setNumberOfConclusionSets(100);
 
 		config.setIsOperationType(TNorm.TN_PRODUCT);
 		config.setAndOperationType(TNorm.TN_PRODUCT);
 		config.setOrOperationType(SNorm.SN_PROBABSUM);
 		config.setImplicationType(TNorm.TN_PRODUCT);
-		config.setConclusionAgregationType(Average.SUM);
+		config.setConclusionAgregationType(SNorm.SN_PROBABSUM);
+//		config.setConclusionAgregationType(Average.SUM);
 		config.setTruthCompositionType(TNorm.TN_PRODUCT);
 		config.setAutoDefuzzyfication(false);
 		config.setDefuzzyfication(DefuzMethod.DF_COG);
@@ -167,12 +171,12 @@ public class FuzzyTestWorker extends Thread {
 		
 		//3. configure inputs and outputs 
 		
-		for(int i=0; i<140; i++) {
+		for(int i=0; i<(14*segments); i++) {
 			rs.describeInputVar(i, "wej"+(i+1), "");
 //			rs.getInputVar(i).fuzz = new FuzzySet().newTriangle(0, 1/b);
 //			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, 1/b);
 //			rs.getInputVar(i).fuzz = new FuzzySet().newTriangle(0, learnPkg.getColumnRange(i)/b);
-//			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, learnPkg.getColumnRange(i) / b);
+			rs.getInputVar(i).fuzz = new FuzzySet().newGaussian(0, learnPkg.getColumnRange(i) / b);
 		}
 		for(int i=0; i<100; i++) {
 			rs.describeOutputVar(i, "wyj"+(i+1), "");
@@ -223,14 +227,14 @@ public class FuzzyTestWorker extends Thread {
 				}
 
 				// dodaj regu³ê w oparciu o wygenerowane przes³anki (dla wszytskich parametrów)
-				rs.addRule(210, 1);
+				rs.addRule(14*segments, 1);
 
-				// 70 po³¹czeñ AND parami - ka¿dy wynik na stos
-				for (int i=1; i<=140; i=i+2) {
+				// 7*segments po³¹czeñ AND parami - ka¿dy wynik na stos
+				for (int i=1; i<=14*segments; i=i+2) {
 					rs.addRuleItem("wej"+i, "fs_a"+i+"_x" + (x+1), "AND", "wej"+(i+1), "fs_a"+(i+1)+"_x" + (x+1));					
 				}
-				// 69 operacji AND dla wyników na stosie
-				for (int i=0; i<69; i++) {
+				// (7*segments-1) operacji AND dla wyników na stosie
+				for (int i=0; i<((7*segments)-1); i++) {
 					rs.addRuleItem("STACK", "", "AND", "STACK", "");					
 				}
 				
@@ -264,9 +268,9 @@ public class FuzzyTestWorker extends Thread {
 //		System.out.println();
 	}
 
-	private static void openLeftAndRightDescription(ReasoningSystem rs, Map<String, List<String>> nazwy) {
+	private void openLeftAndRightDescription(ReasoningSystem rs, Map<String, List<String>> nazwy) {
 		// loop through all parameters
-		for (int i = 0; i < 140; i++) {
+		for (int i = 0; i < 14*segments; i++) {
 			String fs_name = "fs_a" + (i + 1);
 			try {
 				// loop through all classes
@@ -322,10 +326,10 @@ public class FuzzyTestWorker extends Thread {
 
 				int class_real = (int) object.get(object.size()-1);
 
-				for (int z = 0; z < 140; z++) {
-//					double quality = q_vector.get(z);					
-//					if (quality < 0.001) quality = 0.001;
-//					rs.getInputVar(z).fuzz = new FuzzySet().newGaussian(0, (learnPkg.getColumnRange(z) / b) / quality);
+				for (int z = 0; z < 14*segments; z++) {
+					double quality = q_vector.get(z);					
+					if (quality < 0.001) quality = 0.001;
+					rs.getInputVar(z).fuzz = new FuzzySet().newGaussian(0, (learnPkg.getColumnRange(z) / b) / quality);
 					rs.setInput(z, object.get(z));
 				}
 				rs.Process();
@@ -379,8 +383,8 @@ public class FuzzyTestWorker extends Thread {
 
 	}
 
-	private static void printParametersOfReasoningSystem(ReasoningSystem rs, Map<String, List<String>> nazwy) {
-		for (int i = 0; i < 140; i++) {
+	private void printParametersOfReasoningSystem(ReasoningSystem rs, Map<String, List<String>> nazwy) {
+		for (int i = 0; i < 14*segments; i++) {
 			String fs_name = "fs_a" + (i + 1);
 			System.out.println("___ parameter: " + fs_name);
 			try {
