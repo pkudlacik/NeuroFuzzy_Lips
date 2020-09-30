@@ -42,25 +42,21 @@ public class MainFuzzyTest {
 //				100 ); // runs in one set
 
 		//for (double a = 2.0; a < 10.0; a += 0.5)
-			test.doTestLeaveOneOut(3.0, 20, 1);
-		
-		//nierozmyte wejœcie - dobraæ a (b nie ma znaczenia)
+			test.doTestLeaveOneOut(3.0, 20, 600);
 			
-		//	2.5	20	379	221	63.167	36.833	0	0	4025.557
-		//	The best: 63.167%, A: 2.5, B: 20
-
-			
-		//Rozmyte wejœcie	
+		//20 segmentów	
 			
 		//3	20	354	246	59	41	0	0	3701.422
-		//The best: 59%, A: 3, B: 20 - without quality
+		//The best: 59%, A: 3.0, B: 20 - without quality
 			
 		//2	20	381	219	63.5	36.5	0	0	3841.205
-		//The best: 63.5%, A: 2, B: 20 - quality, 
+		//The best: 83.5%, A: 3.0, B: 20 - quality,
 			
-		//2	20	376	224	62.667	37.333	0	0	3998.923
-		//The best: 62.667%, A: 2, B: 20 - quality and sum
-
+		//40 segmentów
+		
+		// 98.167%, A: 3.0, B: 20 - quality,
+			
+			
 	}
 
 }

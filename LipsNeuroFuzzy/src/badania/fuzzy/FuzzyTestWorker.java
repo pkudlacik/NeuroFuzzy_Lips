@@ -245,7 +245,7 @@ public class FuzzyTestWorker extends Thread {
 				nazwy.get("c" + klasa).add("x" + (x+1));
 				
 //				if (x % 10 == 0) {
-//					System.out.print(x+".");
+//					System.out.print("");
 //				}
 
 				x++;
@@ -351,15 +351,17 @@ public class FuzzyTestWorker extends Thread {
 					failed++;
 				}
 				 
-//				 System.out.println("object: " + object);
-//				 System.out.println("classified to: " + class_obtained);
-//				 System.out.println("Result (test) 1: " +
-//				 rs.getOutputVar(0).outset.getMaximumMembership());
-//				 System.out.println("Result (test) 2: " +
-//				 rs.getOutputVar(1).outset.getMaximumMembership());
-//				 System.out.println("Result (test) 3: " +
-//				 rs.getOutputVar(2).outset.getMaximumMembership());
-//				 System.out.println("----------------------------------------------------");
+				DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+				otherSymbols.setDecimalSeparator('.');
+				DecimalFormat df = new DecimalFormat("0.00000", otherSymbols);
+
+//				System.out.println();
+				String line = "idx"+sizePackage+"\t o"+class_obtained+"\t r" + class_real + "\t";
+				for (int c=0; c<100; c++) {
+					line += df.format(rs.getOutputVar(c).outset.getMaximumMembership())+"\t";
+				}
+				System.out.println(line);
+				//System.out.println("----------------------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
