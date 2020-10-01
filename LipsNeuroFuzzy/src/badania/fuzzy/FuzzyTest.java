@@ -235,7 +235,7 @@ public class FuzzyTest {
 		// for all positions
 		// run defined threads (tests)
 		for (int i = 0; i < set_size; i++) {
-			FuzzyTestWorker test = new FuzzyTestWorker(a, b, i, false, this);
+			FuzzyTestWorker2 test = new FuzzyTestWorker2(a, b, i, false, this);
 			// FuzzyTestGrouppedWorker test = new FuzzyTestGrouppedWorker(a, b, i, false,
 			// this);
 			// FuzzyTestClusteredWorker test = new FuzzyTestClusteredWorker(a, b, i, false,
