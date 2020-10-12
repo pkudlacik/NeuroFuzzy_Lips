@@ -20,7 +20,7 @@ import shg.clustering.Cluster;
 import shg.clustering.ClusterData;
 import shg.clustering.Clusterer;
 
-public class FuzzyTestClusteredWorker extends Thread {
+public class FuzzyTestClusteredWorker_old extends Thread {
 
 	private double a = 10;
 	private double b = 2;
@@ -58,7 +58,7 @@ public class FuzzyTestClusteredWorker extends Thread {
 	 * @param sizePackage number of learning samples taken from each class
 	 * @param verbose     if true - print results on console
 	 */
-	public FuzzyTestClusteredWorker(double a, double b, int sizePackage, boolean verbose, FuzzyTest test) {
+	public FuzzyTestClusteredWorker_old(double a, double b, int sizePackage, boolean verbose, FuzzyTest test) {
 		super();
 		this.a = a;
 		this.b = b;

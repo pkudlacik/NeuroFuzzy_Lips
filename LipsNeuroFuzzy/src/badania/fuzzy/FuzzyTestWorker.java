@@ -27,7 +27,7 @@ public class FuzzyTestWorker extends Thread {
 	private boolean verbose = false;
 	
 	//number of segments
-	private int segments = 20; 
+	private int segments = 10; 
 
 	private int success = 0;
 	private int failed = 0;
@@ -107,6 +107,7 @@ public class FuzzyTestWorker extends Thread {
 		DataPackage rest = learnPkg.splitByColumn(learnPkg.getMaxRowSize()-2);
 		learnPkg.merge(bottom);
 
+		//get test vector for Leave One Out method
 		testPkg = learnPkg.removeVector(sizePackage);
 		//learnPkg.add(testPkg); //for 100% verification only
 		

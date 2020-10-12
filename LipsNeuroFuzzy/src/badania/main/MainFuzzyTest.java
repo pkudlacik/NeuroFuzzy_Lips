@@ -42,7 +42,7 @@ public class MainFuzzyTest {
 //				100 ); // runs in one set
 
 		//for (double a = 2.0; a < 10.0; a += 0.5)
-			test.doTestLeaveOneOut(3.0, 20, 1);
+			test.doTestLeaveOneOut(3.0, 20, 600);
 			
 		//20 segmentów	
 			
