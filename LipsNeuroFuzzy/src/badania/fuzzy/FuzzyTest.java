@@ -223,7 +223,7 @@ public class FuzzyTest {
 		otherSymbols.setDecimalSeparator('.');
 		DecimalFormat df = new DecimalFormat("#.###", otherSymbols);
 
-		System.out.println("Starting ...");
+		//System.out.println("Starting ...");
 
 		clearStats();
 
@@ -298,13 +298,13 @@ public class FuzzyTest {
 				System.out.println("Average time (sec.): " + avgTime / 1000);
 				System.out.println("*******************************************************");
 			} else {
-				System.out.println(df.format(a) + "\t" + df.format(b) + "\t" + success + "\t" + fail + "\t"
+				System.out.println(df.format(segments) + "\t" + df.format(a) + "\t" + df.format(b) + "\t" + success + "\t" + fail + "\t"
 						+ df.format(procSucc) + "\t" + df.format(procFail) + "\t" + df.format(avgSuccess) + "\t"
 						+ df.format(avgFail) + "\t" + df.format(avgTime));
 			}
 		}
 
-		System.out.println("The best: " + df.format(bestSuccess) + "%, " + bestParams);
+		//System.out.println("The best: " + df.format(bestSuccess) + "%, " + bestParams);
 
 	}
 }
