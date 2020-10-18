@@ -41,8 +41,9 @@ public class MainFuzzyTest {
 //				15, 15, // size - start, stop
 //				100 ); // runs in one set
 
+		for (int segments = 2; segments <= 30; segments += 2)
+			test.doTestLeaveOneOut(3.0, 20, 600, segments );
 		//for (double a = 2.0; a < 10.0; a += 0.5)
-			test.doTestLeaveOneOut(3.0, 20, 600);
 			
 		//20 segmentów	
 			

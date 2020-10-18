@@ -27,7 +27,7 @@ public class FuzzyTestWorker extends Thread {
 	private boolean verbose = false;
 	
 	//number of segments
-	private int segments = 10; 
+	private int segments = 12; 
 
 	private int success = 0;
 	private int failed = 0;
@@ -52,13 +52,14 @@ public class FuzzyTestWorker extends Thread {
 	 * @param sizePackage number of learning samples taken from each class
 	 * @param verbose     if true - print results on console
 	 */
-	public FuzzyTestWorker(double a, double b, int sizePackage, boolean verbose, FuzzyTest test) {
+	public FuzzyTestWorker(double a, double b, int sizePackage, int segments, boolean verbose, FuzzyTest test) {
 		super();
 		this.a = a;
 		this.b = b;
 		this.sizePackage = sizePackage;
 		this.verbose = verbose;
 		this.test = test;
+		this.segments = segments;
 	}
 
 	public int getSuccess() {
@@ -102,8 +103,13 @@ public class FuzzyTestWorker extends Thread {
 		learnPkg = new DataPackage();
 		DataPackage bottom = new DataPackage();
 		
-		learnPkg.loadTextFile("data/SEG"+segments+"_UP.txt");
-		bottom.loadTextFile("data/SEG"+segments+"_BOTTOM.txt");
+		String segs = "" + segments;
+		if (segs.length() < 2) {
+			segs = "0" + segs;
+		}
+		
+		learnPkg.loadTextFile("data/features/SEG"+segs+"_T.txt");
+		bottom.loadTextFile("data/features/SEG"+segs+"_B.txt");
 		DataPackage rest = learnPkg.splitByColumn(learnPkg.getMaxRowSize()-2);
 		learnPkg.merge(bottom);
 
@@ -114,8 +120,8 @@ public class FuzzyTestWorker extends Thread {
 		qualityPkg = new DataPackage();
 		bottom = new DataPackage();
 
-		qualityPkg.loadTextFile("data/SEG"+segments+"_UP_QUALITY.txt");
-		bottom.loadTextFile("data/SEG"+segments+"_BOTTOM_QUALITY.txt");
+		qualityPkg.loadTextFile("data/quality/SEG"+segs+"_T.txt");
+		bottom.loadTextFile("data/quality/SEG"+segs+"_B.txt");
 		rest = qualityPkg.splitByColumn(qualityPkg.getMaxRowSize()-2);
 		qualityPkg.merge(bottom);
 
@@ -352,16 +358,16 @@ public class FuzzyTestWorker extends Thread {
 					failed++;
 				}
 				 
-				DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
-				otherSymbols.setDecimalSeparator('.');
-				DecimalFormat df = new DecimalFormat("0.00000", otherSymbols);
+//				DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+//				otherSymbols.setDecimalSeparator('.');
+//				DecimalFormat df = new DecimalFormat("0.00000", otherSymbols);
 
 //				System.out.println();
-				String line = "idx"+sizePackage+"\t o"+class_obtained+"\t r" + class_real + "\t";
-				for (int c=0; c<100; c++) {
-					line += df.format(rs.getOutputVar(c).outset.getMaximumMembership())+"\t";
-				}
-				System.out.println(line);
+//				String line = "idx"+sizePackage+"\t o"+class_obtained+"\t r" + class_real + "\t";
+//				for (int c=0; c<100; c++) {
+//					line += df.format(rs.getOutputVar(c).outset.getMaximumMembership())+"\t";
+//				}
+//				System.out.println(line);
 				//System.out.println("----------------------------------------------------");
 			}
 		} catch (Exception e) {

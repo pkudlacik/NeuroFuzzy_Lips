@@ -112,7 +112,7 @@ public class FuzzyTest {
 	}
 
 	public void doTest(double a_start, double a_stop, double a_step, double b_start, double b_stop, double b_step,
-			int size_start, int size_stop, int tests) {
+			int size_start, int size_stop, int segments, int tests) {
 
 		double a = 5;
 		double b = 2;
@@ -142,7 +142,7 @@ public class FuzzyTest {
 					}
 					// run defined threads (tests)
 					for (int i = 0; i < runs; i++) {
-						FuzzyTestWorker test = new FuzzyTestWorker(a, b, size, false, this);
+						FuzzyTestWorker test = new FuzzyTestWorker(a, b, size, segments, false, this);
 						// FuzzyTestGrouppedWorker test = new FuzzyTestGrouppedWorker(a, b, size, false,
 						// this);
 						// FuzzyTestClusteredWorker test = new FuzzyTestClusteredWorker(a, b, size,
@@ -217,7 +217,7 @@ public class FuzzyTest {
 
 	}
 
-	public void doTestLeaveOneOut(double a, double b, int set_size) {
+	public void doTestLeaveOneOut(double a, double b, int set_size, int segments) {
 
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
 		otherSymbols.setDecimalSeparator('.');
@@ -235,7 +235,7 @@ public class FuzzyTest {
 		// for all positions
 		// run defined threads (tests)
 		for (int i = 0; i < set_size; i++) {
-			FuzzyTestWorker test = new FuzzyTestWorker(a, b, i, false, this);
+			FuzzyTestWorker test = new FuzzyTestWorker(a, b, i, segments, false, this);
 //			FuzzyTestWorker2 test = new FuzzyTestWorker2(a, b, i, false, this);
 //			FuzzyTestClusteredWorker test = new FuzzyTestClusteredWorker(a, b, i, false, this);
 			test.start();
@@ -290,7 +290,7 @@ public class FuzzyTest {
 			}
 
 			if (!simpleResults) {
-				System.out.println("A: " + df.format(a) + ", B: " + df.format(b) + ", Reported threads: " + reported);
+				System.out.println("A: " + df.format(a) + ", B: " + df.format(b) + ", segments: " + df.format(segments) + ", Reported threads: " + reported);
 				System.out.print("Success: " + df.format(procSucc) + "%, (" + success + "), ");
 				System.out.println("Failed: " + df.format(procFail) + "%, (" + fail + ")");
 				System.out.print("Average Success: " + df.format(avgSuccess) + ", ");
