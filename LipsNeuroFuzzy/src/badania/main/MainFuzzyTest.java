@@ -12,7 +12,7 @@ public class MainFuzzyTest {
 		test.setShowOnlyBestResults(false);
 //		test.setBestLevel(90.0);
 		test.setBestRange(2.0);
-		test.setThreads(4);
+		test.setThreads(2);
 		
 		// Clusteryzowane: 25 - 93.5%(A:1.5), 20 - 93%(A:1.1), 15 - 92% (A:1.0), 10 - 91% (A:0.7), 5 - 
 
@@ -41,7 +41,7 @@ public class MainFuzzyTest {
 //				15, 15, // size - start, stop
 //				100 ); // runs in one set
 
-		for (int segments = 2; segments <= 30; segments += 2)
+		for (int segments = 30; segments <= 30; segments += 2)
 			test.doTestLeaveOneOut(3.0, 20, 600, segments );
 		//for (double a = 2.0; a < 10.0; a += 0.5)
 			

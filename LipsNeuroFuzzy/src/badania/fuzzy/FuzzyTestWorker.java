@@ -219,8 +219,10 @@ public class FuzzyTestWorker extends Thread {
 					FuzzySet temp = new FuzzySet(nazwa, "");
 					
 					//pobierz jakoœæ
-					double quality = q_vector.get(i);
-					if (quality < 0.001) quality = 0.001;
+					double quality = 1.0;
+//					double quality = q_vector.get(i);
+//					if (quality < 0.001) quality = 0.001;
+					
 							
 					// zdefiniuj funkcjê przynaleznoœci
 
@@ -334,9 +336,9 @@ public class FuzzyTestWorker extends Thread {
 				int class_real = (int) object.get(object.size()-1);
 
 				for (int z = 0; z < 14*segments; z++) {
-					double quality = q_vector.get(z);					
-					if (quality < 0.001) quality = 0.001;
-					rs.getInputVar(z).fuzz = new FuzzySet().newGaussian(0, (learnPkg.getColumnRange(z) / b) / quality);
+//					double quality = q_vector.get(z);					
+//					if (quality < 0.001) quality = 0.001;
+//					rs.getInputVar(z).fuzz = new FuzzySet().newGaussian(0, (learnPkg.getColumnRange(z) / b) / quality);
 					rs.setInput(z, object.get(z));
 				}
 				rs.Process();
