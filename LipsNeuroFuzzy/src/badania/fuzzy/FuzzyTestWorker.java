@@ -219,9 +219,9 @@ public class FuzzyTestWorker extends Thread {
 					FuzzySet temp = new FuzzySet(nazwa, "");
 					
 					//pobierz jakoœæ
-					double quality = 1.0;
-//					double quality = q_vector.get(i);
-//					if (quality < 0.001) quality = 0.001;
+//					double quality = 1.0;
+					double quality = q_vector.get(i);
+					if (quality < 0.001) quality = 0.001;
 					
 							
 					// zdefiniuj funkcjê przynaleznoœci
