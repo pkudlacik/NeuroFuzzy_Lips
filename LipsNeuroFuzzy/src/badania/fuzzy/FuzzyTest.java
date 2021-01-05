@@ -307,4 +307,91 @@ public class FuzzyTest {
 		//System.out.println("The best: " + df.format(bestSuccess) + "%, " + bestParams);
 
 	}
+
+	public void doTestLeaveOneOutDegraded(double a, double b, int set_size, int degradation_level) {
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		DecimalFormat df = new DecimalFormat("#.###", otherSymbols);
+
+		//System.out.println("Starting ...");
+
+		clearStats();
+
+		if (!simpleResults) {
+			System.out.println("*** Processing ");
+		}
+		int counter = 0;
+
+		// for all positions
+		// run defined threads (tests)
+		for (int i = 0; i < set_size; i++) {
+			FuzzyTestWorkerDegraded test = new FuzzyTestWorkerDegraded(a, b, i, 18, degradation_level, false, this);
+			test.start();
+			
+			if ((i+1) % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
+				while (reported < i + 1) {
+					try {
+						if (!simpleResults) {
+							System.out.print(".");
+							counter++;
+							if (counter > 80) {
+								System.out.println();
+								counter = 0;
+							}
+						}
+						TimeUnit.MILLISECONDS.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		}
+
+		// wait for the rest to finish
+		while (reported < set_size) {
+			try {
+				if (!simpleResults) {
+					System.out.print(".");
+					counter++;
+					if (counter > 80) {
+						System.out.println();
+						counter = 0;
+					}
+				}
+
+				TimeUnit.MILLISECONDS.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (!simpleResults)
+			System.out.println(" DONE ***");
+
+		summarizeTest();
+
+		if (allResults || (procSucc > (bestSuccess - bestRange))) {
+
+			if (procSucc > bestSuccess) {
+				bestSuccess = procSucc;
+				bestParams = "A: " + df.format(a) + ", B: " + df.format(b);
+			}
+
+			if (!simpleResults) {
+				System.out.println("A: " + df.format(a) + ", B: " + df.format(b) + ", segments: " + df.format(degradation_level) + ", Reported threads: " + reported);
+				System.out.print("Success: " + df.format(procSucc) + "%, (" + success + "), ");
+				System.out.println("Failed: " + df.format(procFail) + "%, (" + fail + ")");
+				System.out.print("Average Success: " + df.format(avgSuccess) + ", ");
+				System.out.println("Average Failed: " + df.format(avgFail));
+				System.out.println("Average time (sec.): " + avgTime / 1000);
+				System.out.println("*******************************************************");
+			} else {
+				System.out.println(df.format(degradation_level) + "\t" + df.format(a) + "\t" + df.format(b) + "\t" + success + "\t" + fail + "\t"
+						+ df.format(procSucc) + "\t" + df.format(procFail) + "\t" + df.format(avgSuccess) + "\t"
+						+ df.format(avgFail) + "\t" + df.format(avgTime));
+			}
+		}
+
+		//System.out.println("The best: " + df.format(bestSuccess) + "%, " + bestParams);
+	}
 }
