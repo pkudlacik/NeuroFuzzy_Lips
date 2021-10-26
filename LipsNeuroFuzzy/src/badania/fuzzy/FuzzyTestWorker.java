@@ -206,7 +206,7 @@ public class FuzzyTestWorker extends Thread {
 				DataVector q_vector = quality_it.next();
 				
 				// numer klasy to ostatnia pozycja
-				int klasa = (int) vector.get(vector.size()-1);
+				int klasa = vector.get(vector.size()-1).intValue();
 
 				// dla pozosta³ych pozycji wiersza
 				for (int i = 0; i < (vector.size()-1); i++) {
@@ -333,7 +333,7 @@ public class FuzzyTestWorker extends Thread {
 
 				int class_obtained = 0;
 
-				int class_real = (int) object.get(object.size()-1);
+				int class_real = object.get(object.size()-1).intValue();
 
 				for (int z = 0; z < 14*segments; z++) {
 //					double quality = q_vector.get(z);					

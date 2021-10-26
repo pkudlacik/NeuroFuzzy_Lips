@@ -325,7 +325,7 @@ public class FuzzyTest {
 		// for all positions
 		// run defined threads (tests)
 		for (int i = 0; i < set_size; i++) {
-			FuzzyTestWorkerDegraded test = new FuzzyTestWorkerDegraded(a, b, i, 18, degradation_level, false, this);
+			FuzzyTestWorkerDegraded test = new FuzzyTestWorkerDegraded(a, b, i, 10, degradation_level, false, this);
 			test.start();
 			
 			if ((i+1) % threads == 0) { //wait every defined number of threads until they are done to continue creating new ones
